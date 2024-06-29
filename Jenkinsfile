@@ -1,40 +1,38 @@
 pipeline {
     agent any
     
+    tools {
+        nodejs "node"
+    }
+    
     environment {
-        NPM_CONFIG_LOGLEVEL = 'warn'
         NGROK_URL = 'https://67d2-41-90-179-216.ngrok-free.app'
     }
     
     stages {
-        stage('Checkout') {
+        stage('Cloning Git') {
             steps {
-                checkout scm
+                git url: "https://github.com/c-kiplimo/gallery", branch: "master"
             }
         }
-
+        
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
-
-        // stage('Run Tests') {
-        //     steps {
-        //         sh 'npm test'
-        //     }
-        // }
-
-        stage('Start Server and Expose via Ngrok') {
+        
+        stage('Start Servers and Expose via Ngrok') {
             steps {
                 script {
                     echo "Ngrok URL: ${env.NGROK_URL}"
                     sh 'nohup node server.js &'
+                    sh 'nohup node index.js &'
                 }
             }
         }
     }
-
+    
     post {
         always {
             echo 'Cleaning up...'
