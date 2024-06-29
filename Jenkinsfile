@@ -1,61 +1,23 @@
 pipeline {
     agent any
-
-    environment {
-        NPM_CONFIG_LOGLEVEL = 'warn'
-        NGROK_URL = 'https://67d2-41-90-179-216.ngrok-free.app'
-    }
-
+    
+    tools {nodejs "node"}
+    
     stages {
-        stage('Setup') {
+        stage('Cloning Git') {
             steps {
-                script {
-                    sh 'curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -'
-                    sh 'sudo apt-get install -y nodejs'
-                    sh 'node --version'
-                    sh 'npm --version'
-                }
+                 git url: "https://github.com/c-kiplimo/gallery", branch: "master"
             }
         }
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
+        stage('Install Dependencies'){
             steps {
                 sh 'npm install'
             }
         }
-
-        stage('Run Tests') {
+        stage ('Test') {
             steps {
                 sh 'npm test'
             }
-        }
-
-        stage('Use Ngrok for Webhook Testing') {
-            steps {
-                script {
-                    echo "Ngrok URL: ${env.NGROK_URL}"
-                    sh 'node server.js --webhook ${env.NGROK_URL}/webhook'
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning up...'
-            cleanWs()
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed.'
         }
     }
 }
