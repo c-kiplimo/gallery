@@ -10,8 +10,9 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    sh 'curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -'
-                    sh 'sudo apt-get install -y nodejs'
+                    sh 'curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh'
+                    sh 'bash nodesource_setup.sh'
+                    sh 'apt-get install -y nodejs'
                     sh 'node --version'
                     sh 'npm --version'
                 }
@@ -30,11 +31,11 @@ pipeline {
             }
         }
 
-        // stage('Run Tests') {
-        //     steps {
-        //         sh 'npm test'
-        //     }
-        // }
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
 
         stage('Start Server and Expose via Ngrok') {
             steps {
