@@ -26,8 +26,7 @@ pipeline {
             steps {
                 script {
                     echo "Ngrok URL: ${env.NGROK_URL}"
-                    sh 'nohup node server.js &'
-                    sh 'nohup node index.js &'
+                    sh 'nohup node server.js'
                 }
             }
         }
