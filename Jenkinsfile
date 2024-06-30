@@ -21,10 +21,10 @@ pipeline {
                 sh 'npm install'
             }
         }
-        //start server using node server.js
+        //start server using npm start
         stage('Start Server') {
             steps {
-                sh 'node server.js'
+                sh 'npm start'
             }
         }
     }
