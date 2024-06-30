@@ -1,18 +1,14 @@
 pipeline {
     agent any
     
-    tools {
-        nodejs "node"
-    }
-    
-    triggers {
-        githubPush()
+    environment {
+        RENDER_TOKEN = credentials('rnd_Pjy5ag8cLev5MX0hC4vzq7E6xPfC')
     }
     
     stages {
-        stage('Cloning Git') {
+        stage('Clone Repository') {
             steps {
-                git url: "https://github.com/c-kiplimo/gallery", branch: "master"
+                git 'https://github.com/c-kiplimo/gallery.git'
             }
         }
         
@@ -21,9 +17,20 @@ pipeline {
                 sh 'npm install'
             }
         }
+        
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        
         stage('Deploy to Render') {
             steps {
-                sh 'render deploy -- --build-command "npm install && npm run build"'
+                script {
+                    def renderAuthToken = "Bearer ${env.RENDER_TOKEN}"
+                    def response = sh(script: "render deploy -- --build-command 'npm install && npm run build'", returnStdout: true)
+                    echo response
+                }
             }
         }
     }
