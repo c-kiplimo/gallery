@@ -21,6 +21,12 @@ pipeline {
                 sh 'npm install'
             }
         }
+        //start server using node server.js
+        stage('Start Server') {
+            steps {
+                sh 'node server.js'
+            }
+        }
     }
     
     post {
