@@ -4,6 +4,11 @@ pipeline {
     tools {
         nodejs "node"
     }
+    
+    triggers {
+        githubPush()
+    }
+    
     stages {
         stage('Cloning Git') {
             steps {
