@@ -8,7 +8,6 @@ pipeline {
     triggers {
         githubPush()
     }
-    
     stages {
         stage('Cloning Git') {
             steps {
