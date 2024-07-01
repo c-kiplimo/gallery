@@ -1,6 +1,7 @@
 pipeline {
-    agent any
-    
+    agent {
+        label 'linux'
+    }
     tools {
         nodejs "node"
     }
@@ -20,7 +21,7 @@ pipeline {
     
     post {
         always {
-            node('any') {
+            node('linux') {
                 echo 'Cleaning up workspace...'
                 cleanWs()
             }
