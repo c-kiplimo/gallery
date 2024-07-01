@@ -21,12 +21,6 @@ pipeline {
                 sh 'npm install'
             }
         }
-        
-        stage('Deploy to Render') {
-            steps {
-                sh 'render deploy -- --build-command "npm install && npm run build"'
-            }
-        }
     }
     
     post {
