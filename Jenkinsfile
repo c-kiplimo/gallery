@@ -1,10 +1,10 @@
 pipeline {
-    agent {
-        label 'linux'
-    }
+    agent any
+    
     tools {
-        nodejs "node"
+        nodejs "nodejs"
     }
+         
     stages {
         stage('Cloning Git') {
             steps {
@@ -17,20 +17,30 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('Run Tests') {
+            steps {
+                echo 'Running Tests on test'
+                sh 'npm test'
+            }
+        }
+        
     }
     
     post {
         always {
-            node('linux') {
-                echo 'Cleaning up workspace...'
-                cleanWs()
-            }
+            echo 'Cleaning up...'
+            cleanWs()
         }
         success {
             echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed. Sending email notification...'
+            emailext (
+                subject: "Pipeline Failed: Gallery Project",
+                body: "The Jenkins pipeline for Gallery project has failed. Please check the build logs for details.",
+                to: "kevin.kipkemei@student.moringaschool.com",
+            )
         }
     }
 }
