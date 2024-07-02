@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "mocha --exit",
-    "build": "echo 'Building the project...' && mkdir -p dist && cp -r * dist/"
+    "build": "echo 'Building the project...' && mkdir -p dist && find . -maxdepth 1 ! -name dist -exec cp -r {} dist/ \\;"
   },
   "keywords": [],
   "author": "",
