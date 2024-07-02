@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --exit"
+    "start": "node server.js",
+    "test": "mocha --exit",
+    "build": "echo 'Building the project...' && mkdir -p dist && cp -r * dist/"
   },
   "keywords": [],
   "author": "",
