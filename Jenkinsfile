@@ -5,7 +5,6 @@ pipeline {
         RENDER_APP_NAME = 'gallery' 
         SLACK_CHANNEL = 'cicd-pipelines' 
         SLACK_CREDENTIALS_ID = 'SLACK-TOKEN-API'
-        EMAIL_RECIPIENT = 'kiplimocollins855@gmail.com' 
     }
     
     tools {
@@ -95,20 +94,6 @@ pipeline {
                     color: 'danger', 
                     message: "Build failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                 )
-            }
-        }
-        always {
-            script {
-                if (currentBuild.result == 'FAILURE') {
-                    emailext (
-                        to: "${EMAIL_RECIPIENT}",
-                        subject: "Jenkins Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                        body: """
-                        <p>The Jenkins build <b>${env.JOB_NAME} ${env.BUILD_NUMBER}</b> has failed.</p>
-                        <p>Please check the Jenkins console output for more details: ${env.BUILD_URL}</p>
-                        """
-                    )
-                }
             }
         }
     }
