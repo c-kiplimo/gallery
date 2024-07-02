@@ -2,8 +2,7 @@ process.env.NODE_ENV = 'test';
 
 var chai = require('chai');
 var chaiHttp = require('chai-http');
-
-var server = require('../server');  
+var server = require('../server'); // Ensure this points to your server file
 var should = chai.should();
 var expect = chai.expect;
 
@@ -15,6 +14,7 @@ describe('Photos', function() {
         chai.request(server)
             .get('/')
             .end(function(err, res) {
+                if (err) done(err);
                 res.should.have.status(200);
                 res.should.be.html;
                 res.body.should.be.a('object');

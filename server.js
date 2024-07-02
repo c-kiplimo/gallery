@@ -2,9 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const dotenv = require('dotenv');
-const config = require('./_config'); 
+const config = require('./_config');
 
-dotenv.config(); 
+dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
 const mongodb_url = config.mongoURI[env];
@@ -35,6 +35,9 @@ app.use('/', index);
 app.use('/image', image);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+
+const server = app.listen(PORT, () => {
     console.log(`Server is listening at http://localhost:${PORT}`);
 });
+
+module.exports = server; // Export the server instance
